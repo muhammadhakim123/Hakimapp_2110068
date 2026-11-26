@@ -1,8 +1,7 @@
-import { getToken, getSavedUser } from "@services/authService";
 import { Ionicons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import { useEffect } from "react";
-import { ActivityIndicator, Text, View, StyleSheet } from "react-native";
+import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
 
 export default function IndexScreen() {
   useEffect(() => {
@@ -11,14 +10,10 @@ export default function IndexScreen() {
 
   async function checkSession() {
     try {
-      const token = await getToken();
-      const user = await getSavedUser();
-
-      if (token && user) {
-        // Sesi masih ada — langsung ke halaman utama
+      const session = await getAuthSession();
+      if (session) {
         router.replace("/(tabs)/home");
       } else {
-        // Belum login — ke halaman login
         router.replace("/login");
       }
     } catch {
